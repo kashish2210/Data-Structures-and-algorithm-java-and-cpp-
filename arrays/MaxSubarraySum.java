@@ -10,7 +10,11 @@ public class subarray{
             for(int j=i; j < arr.length;j++){
                 int end = j;
                 currentSum =0;
-                for (int k = start ; k <= end; k++){
+                for (int k = start ; k <= end; k++){0]
+
+
+
+                
                     currentSum += arr[k];
                 }
                 if(maxSum < currentSum){
