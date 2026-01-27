@@ -1,7 +1,7 @@
 import java.util.*;
 
-public class compliment{
+public class addone{
     public static void main (String args[]){
-        System.out.println((~0));
+        System.out.println(Math.abs(~5));
     }
 }
