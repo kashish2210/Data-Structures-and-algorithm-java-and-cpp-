@@ -114,26 +114,153 @@ public class LinkedList{
         size--;
         return val;
     }
+    public void swap(int a, int b){
+        if (a == b) {
+            return;
+        }
+        if (a < 0 || b < 0 || a >= size || b >= size) {
+            System.out.println("Invalid index for swap!");
+            return;
+        }
+
+        if (a > b) {
+            int t = a;
+            a = b;
+            b = t;
+        }
+
+        Node first = head;
+        for (int i = 0; i < a; i++) {
+            first = first.next;
+        }
+
+        Node second = head;
+        for (int i = 0; i < b; i++) {
+            second = second.next;
+        }
+
+        int temp = first.data;
+        first.data = second.data;
+        second.data = temp;
+    }
+    public void beep(int n, int m){
+        Node curr = head;
+        while(curr != null){
+            for(int i = 1 ; i < m && curr != null; i++){
+                curr= curr.next;
+            }
+            Node temp = curr.next;
+            for(int i = 0 ; i < n && temp!= null; i++){
+                temp  = temp.next;
+            }
+            curr.next = temp;
+            curr = temp;
+        }
+    }
+
+    public void oddEvenLinkedList(){
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        Node evenHead = null;
+        Node evenTail = null;
+        Node oddHead = null;
+        Node oddTail = null;
+        Node curr = head;
+
+        while (curr != null) {
+            Node nextNode = curr.next;
+            curr.next = null;
+
+            if (curr.data % 2 == 0) {
+                if (evenHead == null) {
+                    evenHead = evenTail = curr;
+                } else {
+                    evenTail.next = curr;
+                    evenTail = curr;
+                }
+            } else {
+                if (oddHead == null) {
+                    oddHead = oddTail = curr;
+                } else {
+                    oddTail.next = curr;
+                    oddTail = curr;
+                }
+            }
+
+            curr = nextNode;
+        }
+
+        if (evenHead == null) {
+            head = oddHead;
+            tail = oddTail;
+            return;
+        }
+
+        head = evenHead;
+        evenTail.next = oddHead;
+        tail = (oddTail != null) ? oddTail : evenTail;
+    }
+
+    public static Node mergeKSortedLists(Node[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+
+        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.data));
+        for (Node node : lists) {
+            if (node != null) {
+                pq.offer(node);
+            }
+        }
+
+        Node dummy = new Node(-1);
+        Node curr = dummy;
+
+        while (!pq.isEmpty()) {
+            Node smallest = pq.poll();
+            curr.next = smallest;
+            curr = curr.next;
+
+            if (smallest.next != null) {
+                pq.offer(smallest.next);
+            }
+        }
+
+        return dummy.next;
+    }
+
+    public static Node buildList(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return null;
+        }
+
+        Node headNode = new Node(arr[0]);
+        Node temp = headNode;
+        for (int i = 1; i < arr.length; i++) {
+            temp.next = new Node(arr[i]);
+            temp = temp.next;
+        }
+        return headNode;
+    }
+
+    public static void printList(Node node) {
+        Node temp = node;
+        while (temp != null) {
+            System.out.print(temp.data + "->");
+            temp = temp.next;
+        }
+        System.out.println("null");
+    }
 
     public static void main(String[] args) {
+        Node l1 = buildList(new int[]{1, 3});
+        Node l2 = buildList(new int[]{6, 8});
+        Node l3 = buildList(new int[]{9, 10});
 
-        LinkedList ll = new LinkedList();
-
-        ll.addFirst(2);
-        ll.addFirst(1);
-        ll.addLast(3);
-        ll.addLast(4);
-
-        ll.print();
-
-        ll.removeAt(2);
-        ll.print();
-        ll.removeFirst();
-        ll.print();
-        ll.removeLast();
-        ll.print();
-        ll.addAt(1, 8);
-        ll.print();
-        System.out.println("Size = " + ll.size);
+        Node[] lists = new Node[]{l1, l2, l3};
+        Node mergedHead = mergeKSortedLists(lists);
+        printList(mergedHead);
     }
 }
