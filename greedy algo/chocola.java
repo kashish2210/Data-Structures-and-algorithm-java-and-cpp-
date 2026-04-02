@@ -22,7 +22,7 @@ public class chocola{
         }
         while(h < costHor.length){
             cost += (costHor[h]*vp);
-            hp++;
+            hp++;\
             h++;
         }
         while(v < costVer.length){
