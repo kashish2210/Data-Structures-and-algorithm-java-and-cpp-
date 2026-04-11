@@ -1,0 +1,73 @@
+//indirect level order traversal/search
+import java.util.*;
+public class graphs{
+    static class Edge{
+        int source;
+        int destination;
+        public Edge(int source , int destination){
+            this.source = source;
+            this.destination = destination;
+        }
+    }
+    public static void createGraph(ArrayList<Edge> graph[]){
+        for(int i = 0 ; i < graph.length ; i++){
+            graph[i] = new ArrayList<Edge>();
+        }
+        graph[0].add(new Edge(0, 1));
+        graph[0].add(new Edge(0, 2));
+
+        graph[1].add(new Edge(1, 0));
+        graph[1].add(new Edge(1, 3));
+
+        graph[2].add(new Edge(2, 0));
+        graph[2].add(new Edge(2, 4));
+
+        graph[3].add(new Edge(3, 1));
+        graph[3].add(new Edge(3, 4));
+        graph[3].add(new Edge(3, 5));
+
+        graph[4].add(new Edge(4, 2));
+        graph[4].add(new Edge(4, 3));
+        graph[4].add(new Edge(4, 5));
+
+        graph[5].add(new Edge(5, 3));
+        graph[5].add(new Edge(5, 4));
+        graph[5].add(new Edge(5, 6));
+
+        graph[6].add(new Edge(6, 5));
+    }
+
+    public static boolean isCycle(ArrayList<Edge> graph[] , int curr , boolean[] visited , boolean[] rec){
+        visited[curr] = true;
+        rec[curr] = true;
+        for(int i = 0 ; i < graph[curr].size() ; i++){
+            Edge e = graph[curr].get(i);
+            if(rec[e.destination] == true){
+                return true;
+            }else if(!visited[e.destination]){
+                if(isCycle(graph , e.destination , visited , rec));{
+                    return true;
+                }
+            }
+        }
+        rec[curr] = false;
+        return false;
+    }
+    public static void main(String args[]){
+        int vertex = 7;
+        @SuppressWarnings("unchecked")
+        ArrayList<Edge> graph[] = (ArrayList<Edge>[]) new ArrayList[vertex];
+        createGraph(graph);
+        boolean[] visited = new boolean[vertex];
+        boolean[] rec = new boolean[vertex];
+        for(int i = 0 ; i < vertex ; i++){
+            if(!visited[i]){
+                boolean isit = isCycle(graph , 0, visited , rec);
+                if(isit){
+                    System.out.println(isit);
+                    break;
+                }
+            }
+        }
+    }
+}
